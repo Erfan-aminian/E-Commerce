@@ -1,6 +1,7 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-{% block static %} {% endblock%}
+<link rel="stylesheet" href="{% static 'accounts/css/login.css' %}">
 <head>
     <meta charset="UTF-8">
     <title>Book store</title>
@@ -15,13 +16,14 @@
 </head>
 <body>
 {% include 'inc/navbar.html' %}
-<div class="jumbotron">
+<div class="login">
     {% include 'inc/messages.html' %}
-    {% block content %}{% endblock %}
-    <br/>
-    <br/>
-
-
+	<h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+    	{{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block btn-large", value="send">Let me in.</button>
+    </form>
 </div>
 </body>
 </html>
