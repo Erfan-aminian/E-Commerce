@@ -6,4 +6,9 @@
     <p>{{ product.price }} Toman</p>
     <img src="{{ product.image.url }}" style="width: 300px;">
     <p>{{ product.description|safe }}</p><br/><br/>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Add to cart">
+    </form>
 {% endblock %}
