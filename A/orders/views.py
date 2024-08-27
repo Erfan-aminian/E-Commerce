@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-
+from forms import CartAddform
+from home.models import Product
+from cart import Cart
 # Create your views here.
 class CartView(View):
     def get(self, request):
@@ -8,4 +10,10 @@ class CartView(View):
 
 class CartAddView(View):
     def post(self, request, product_id):
-        pass
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=product_id)
+        form = CartAddform(request.POST)
+        if form.is_valid():
+            cart.add(product, form.cleaned_data['quantity'])
+        return redirect('orders:cart')
+
