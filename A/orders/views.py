@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from forms import CartAddform
+from .forms import CartAddform
 from home.models import Product
-from cart import Cart
+from .cart import Cart
 # Create your views here.
 class CartView(View):
     def get(self, request):
-        return render(request, 'orders/cart.html')
+        cart = Cart(request)
+        return render(request, 'orders/cart.html', {'cart': cart})
 
 class CartAddView(View):
     def post(self, request, product_id):
