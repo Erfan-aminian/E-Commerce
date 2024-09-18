@@ -60,6 +60,9 @@ CallbackURL = 'http://127.0.0.1:8080/orders/verify/'
 class OrderPayView(LoginRequiredMixin, View):
     def get(self, request, order_id):
         order = Order.objects.get(id=order_id)
+        request.session['order_pay'] = {
+            'order_id' : order.id,
+        }
         data = {
             "MerchantID": settings.MERCHANT,
             "Amount": order.get_total_price(),
@@ -87,7 +90,29 @@ class OrderPayView(LoginRequiredMixin, View):
             return {'status': False, 'code': 'connection error'}
 
 
+class OrderVerifyView(LoginRequiredMixin, View):
+    def get(self, request, authority):
+        order_id = request.session['order_pay']['order_id']
+        order = Order.objects.get(id=int(order_id))
+        data = {
+            "MerchantID": settings.MERCHANT,
+            "Amount": order.get_total_price(),
+            "Authority": authority,
+        }
+        data = json.dumps(data)
+        # set content length by data
+        headers = {'content-type': 'application/json', 'content-length': str(len(data))}
+        response = requests.post(ZP_API_VERIFY, data=data, headers=headers)
 
+        if response.status_code == 200:
+            response = response.json()
+            if response['Status'] == 100:
+                order.paid = True
+                order.save()
+                return {'status': True, 'RefID': response['RefID']}
+            else:
+                return {'status': False, 'code': str(response['Status'])}
+        return response
 
 
 
