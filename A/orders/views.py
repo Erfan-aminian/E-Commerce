@@ -1,13 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from .forms import CartAddform
+from .forms import CartAddform, CouponApplyForm
 from home.models import Product
 from .cart import Cart
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Coupon
 import requests
 import json
 from A import settings
+import datetime
+from django.contrib import messages
+
 from django.http import HttpResponse
 # Create your views here.
 class CartView(View):
@@ -33,9 +36,10 @@ class CartRemoveView(View):
 
 
 class OrderDetailView(LoginRequiredMixin, View):
+    form_class = CouponApplyForm
     def get(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        return render(request, 'orders/order.html', {'order': order})
+        return render(request, 'orders/order.html', {'order': order, 'form': self.form_class})
 
 class OrderCreateView(LoginRequiredMixin, View):
     def get(self, request):
@@ -115,6 +119,22 @@ class OrderVerifyView(LoginRequiredMixin, View):
         return response
 
 
+class CouponApplyView(LoginRequiredMixin, View):
+    form_class = CouponApplyForm
+    def post(self, request, order_id):
+        now = datetime.datetime.now()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            try:
+                coupon = Coupon.objects.get(code__exact=code, valid_from__lte=now, valid_to__gte=now, active=True)
+            except Coupon.DoesNotExist:
+                messages.error(request,'This coupon does not exists', 'danger')
+                return redirect('orders:order_detail', order_id )
+            order = Order.objects.get(id=order_id)
+            order.discount = coupon.discount
+            order.save()
+        return redirect('orders:order_detail', order_id)
 
 
 
