@@ -1,4 +1,4 @@
-#!/home/erfan/Desktop/eccomerse/venv/bin/python3
+#!/home/erfan/Desktop/site/E-Commerce/venv/bin/python3.9
 
 import sys
 import json
