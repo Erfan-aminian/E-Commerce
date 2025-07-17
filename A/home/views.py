@@ -1,3 +1,5 @@
+from itertools import product
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from .models import Product,Category
@@ -5,6 +7,7 @@ from . import tasks
 from django.contrib import messages
 from utils import IsAdminUserMixin
 from orders.forms import CartAddform
+import random
 
 # Create your views here.
 
@@ -20,10 +23,33 @@ class HomeView(View):
 
 
 class ProductDetailView(View):
-    def get(self, request, slug):
-        product = get_object_or_404(Product, slug=slug)
-        form = CartAddform()
-        return render(request, 'home/detail.html', {'product': product, 'form': form})
+    def get(self, request,product_id ,slug):
+        product = get_object_or_404(Product,id=product_id , slug=slug)
+
+        current_product_categories = product.category.all()
+        print("Categories for current product:", [c.name for c in current_product_categories])
+
+        related_books_queryset = Product.objects.filter(category__in=current_product_categories
+                                                        ).exclude(id=product.id
+                                                                  ).distinct()
+
+        if related_books_queryset.count() > 4:
+            related_books = random.sample(list(related_books_queryset), 4)
+        else:
+            related_books = list(related_books_queryset)
+
+        print("Related Books Count:", len(related_books))  # این خط رو اضافه کنین
+        for book in related_books:  # این حلقه رو هم اضافه کنین
+            print("Related Book Name:", book.name)
+
+        context = {
+            'product': product,
+            'related_books': related_books,
+            'form': CartAddform(),
+        }
+        return render(request, 'home/detail.html', context)
+
+
 
 
 class BucketHome(IsAdminUserMixin, View):
