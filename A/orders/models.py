@@ -17,6 +17,11 @@ class Order(models.Model):
     def __str__(self):
         return f'{self.user} - {str(self.id)}'
 
+    def sum_price(self):
+        total = sum(item.get_cost() for item in self.item.all())
+        return total
+
+
     def get_total_price(self):
         total = sum(item.get_cost() for item in self.item.all())
         if self.discount:

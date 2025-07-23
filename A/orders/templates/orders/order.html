@@ -60,11 +60,11 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-center pb-2 border-b border-gray-200">
                         <span class="text-lg text-gray-700">جمع کل سبد:</span>
-                        <span class="text-lg font-semibold text-gray-800">{{ order.get_cart_total }} تومان</span>
+                        <span class="text-lg font-semibold text-gray-800">{{ order.sum_price }} تومان</span>
                     </div>
                     <div class="flex justify-between items-center pb-2 border-b border-gray-200">
                         <span class="text-lg text-gray-700">تخفیف اعمال شده:</span>
-                        <span class="text-lg font-semibold text-green-700">{{ order.get_discount }} تومان</span>
+                        <span class="text-lg font-semibold text-green-700">{{ order.discount }} درصد</span>
                     </div>
                     <div class="flex justify-between items-center pt-2">
                         <span class="text-2xl font-bold text-gray-900">مبلغ نهایی پرداخت:</span>
