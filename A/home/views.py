@@ -21,6 +21,14 @@ class HomeView(View):
 
         return render(request, 'home/home.html', {'products': products, 'categories':categories})
 
+class GetAllCategoriesView(View):
+    def get(self, request):
+        categories = Category.objects.all()
+        return render(request, 'home/all_category.html, {'categories':categories})
+
+
+
+
 
 class ProductDetailView(View):
     def get(self, request,product_id ,slug):
