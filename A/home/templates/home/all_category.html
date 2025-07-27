@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دسته‌بندی کتاب‌ها</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#3b82f6', // Blue-500 for primary actions
+                        secondary: '#6b7280', // Gray-500 for secondary text
+                        accent: '#ef4444', // Red-500 for accents/sale
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            background-color: #f8fafc; /* Lightest gray background */
+            color: #334155; /* Dark slate gray for general text */
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold rounded-md px-2 py-1 transition-all duration-200 hover:bg-white hover:text-blue-700">کتاب‌خانه من</a>
+            <nav>
+                <ul class="flex space-x-4 space-x-reverse">
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">خانه</a></li>
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">کتاب‌ها</a></li>
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">دسته‌بندی‌ها</a></li>
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">تماس با ما</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto mt-8 p-4">
+        <h1 id="page-title" class="text-4xl font-extrabold text-center mb-8 text-gray-900">دسته‌بندی: [نام دسته‌بندی]</h1>
+
+        <section id="subcategories-section" class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">زیرمجموعه‌ها</h2>
+            <div id="subcategories-container" class="flex flex-wrap justify-center gap-6">
+                {% for category in categories %}
+                    <div class="relative group">
+                        <a href="{{ category.get_absolute_url }}" class="bg-blue-100 text-blue-800 px-5 py-2 rounded-full font-medium text-lg shadow-sm hover:bg-blue-200 hover:text-blue-900 transition-all duration-200">
+                            {{ category.name }}
+                        </a>
+                        {% if category.scategory.all %}
+                            <div class="absolute top-full mt-2 w-48 bg-white shadow-lg rounded-md border border-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                {% for sub in category.scategory.all %}
+                                    <a href="{{ sub.get_absolute_url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ sub.name }}</a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 id="products-section-title" class="text-2xl font-bold text-center mb-6 text-gray-800">محصولات</h2>
+            <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white p-8 mt-12">
+        <div class="container mx-auto text-center">
+            <p class="mb-4">&copy; 2024 فروشگاه کتاب. تمامی حقوق محفوظ است.</p>
+            <div class="flex justify-center space-x-6 space-x-reverse">
+                <a href="#" class="hover:text-blue-400 transition-colors duration-200">درباره ما</a>
+                <a href="#" class="hover:text-blue-400 transition-colors duration-200">حریم خصوصی</a>
+                <a href="#" class="hover:text-blue-400 transition-colors duration-200">سوالات متداول</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mock Data for Products (filtered by category/subcategory)
+        // این داده‌ها همچنان برای نمایش محصولات استفاده می‌شوند.
+        const allProducts = [
+            { id: 1, name: '۱۹۸۴', author: 'جورج اورول', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=1984', price: '۹۵,۰۰۰ تومان', categoryId: 'novel', subcategoryId: 'classic-novel' },
+            { id: 2, name: 'کیمیاگر', author: 'پائولو کوئلیو', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=Alchemist', price: '۷۰,۰۰۰ تومان', categoryId: 'novel', subcategoryId: 'modern-novel' },
+            { id: 3, name: 'صد سال تنهایی', author: 'گابریل گارسیا مارکز', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=100+Years', price: '۱۲۰,۰۰۰ تومان', categoryId: 'novel', subcategoryId: 'modern-novel' },
+            { id: 4, name: 'شازده کوچولو', author: 'آنتوان دو سنت اگزوپری', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=Little+Prince', price: '۵۵,۰۰۰ تومان', categoryId: 'novel', subcategoryId: 'classic-novel' },
+            { id: 5, name: 'فلسفه رنسانس', author: 'ارنست کاسیرر', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=Renaissance+Phil', price: '۱۰۰,۰۰۰ تومان', categoryId: 'philosophy', subcategoryId: 'modern-philosophy' },
+            { id: 6, name: 'تاریخ ایران باستان', author: 'حسن پیرنیا', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=Ancient+Iran', price: '۱۵۰,۰۰۰ تومان', categoryId: 'history', subcategoryId: null },
+            { id: 7, name: 'سقراط', author: 'افلاطون', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=Socrates', price: '۸۰,۰۰۰ تومان', categoryId: 'philosophy', subcategoryId: 'ancient-philosophy' },
+            { id: 8, name: 'هابیت', author: 'جی.آر.آر. تالکین', image_url: 'https://placehold.co/300x450/e0f2f7/0284c7?text=Hobbit', price: '۹۰,۰۰۰ تومان', categoryId: 'novel', subcategoryId: 'fantasy-novel' }
+        ];
+
+        const pageTitle = document.getElementById('page-title');
+        const productsSectionTitle = document.getElementById('products-section-title');
+        const productsContainer = document.getElementById('products-container');
+
+        // تابع برای استخراج پارامترهای URL
+        function getUrlParams() {
+            const params = {};
+            // فرض می‌کنیم URL به شکل /categories/novel/classic-novel یا /categories/novel هست.
+            // این یک شبیه‌سازی ساده است و برای پروژه واقعی باید دقیق‌تر باشد.
+            const path = window.location.pathname.split('/').filter(p => p !== '');
+
+            if (path[0] === 'categories' && path.length >= 2) {
+                params.categoryId = path[1];
+                if (path.length >= 3) {
+                    params.subcategoryId = path[2];
+                }
+            }
+            return params;
+        }
+
+        function renderPage() {
+            const params = getUrlParams();
+            const currentCategoryId = params.categoryId || 'novel'; // پیش‌فرض برای دمو
+            const currentSubcategoryId = params.subcategoryId || null;
+
+            let displayedCategoryName = '';
+            let displayedSubcategoryName = '';
+            let filteredProducts = [];
+
+            // در اینجا باید اطلاعات دسته و زیردسته را از بک‌اند داشته باشیم یا از داده‌های mock استفاده کنیم
+            // برای سادگی و نمایش، از allCategories استفاده می‌کنیم اما در واقعیت این اطلاعات از بک‌اند می‌آیند
+            const allCategories = [
+                {
+                    id: 'novel',
+                    name: 'رمان',
+                    subcategories: [
+                        { id: 'classic-novel', name: 'رمان کلاسیک' },
+                        { id: 'modern-novel', name: 'رمان مدرن' },
+                        { id: 'fantasy-novel', name: 'رمان فانتزی' }
+                    ]
+                },
+                {
+                    id: 'philosophy',
+                    name: 'فلسفه',
+                    subcategories: [
+                        { id: 'ancient-philosophy', name: 'فلسفه باستان' },
+                        { id: 'modern-philosophy', name: 'فلسفه مدرن' }
+                    ]
+                },
+                {
+                    id: 'history',
+                    name: 'تاریخ',
+                    subcategories: []
+                }
+            ];
+
+            const category = allCategories.find(cat => cat.id === currentCategoryId);
+
+            if (category) {
+                displayedCategoryName = category.name;
+
+                if (currentSubcategoryId) {
+                    const subcategory = category.subcategories.find(sub => sub.id === currentSubcategoryId);
+                    if (subcategory) {
+                        displayedSubcategoryName = subcategory.name;
+                        pageTitle.textContent = `زیرمجموعه: ${subcategory.name}`;
+                        productsSectionTitle.textContent = `محصولات ${subcategory.name}`;
+                        filteredProducts = allProducts.filter(p => p.subcategoryId === currentSubcategoryId);
+                    } else {
+                        // Subcategory not found, default to main category products
+                        pageTitle.textContent = `دسته‌بندی: ${category.name}`;
+                        productsSectionTitle.textContent = `محصولات ${category.name}`;
+                        filteredProducts = allProducts.filter(p => p.categoryId === currentCategoryId);
+                    }
+                } else {
+                    // No specific subcategory, display main category name
+                    pageTitle.textContent = `دسته‌بندی: ${category.name}`;
+                    productsSectionTitle.textContent = `محصولات ${category.name}`;
+                    filteredProducts = allProducts.filter(p => p.categoryId === currentCategoryId);
+                }
+            } else {
+                pageTitle.textContent = 'دسته‌بندی یافت نشد';
+                productsSectionTitle.textContent = 'محصولات';
+                filteredProducts = [];
+            }
+
+            // Render Products
+            productsContainer.innerHTML = ''; // Clear existing products
+            if (filteredProducts.length === 0) {
+                const noProductsMessage = document.createElement('p');
+                noProductsMessage.className = 'col-span-full text-center text-xl text-gray-500 mt-8';
+                noProductsMessage.textContent = 'محصولی در این دسته‌بندی/زیرمجموعه یافت نشد.';
+                productsContainer.appendChild(noProductsMessage);
+            } else {
+                filteredProducts.forEach(book => {
+                    const bookCard = document.createElement('div');
+                    bookCard.className = 'bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl border border-gray-200';
+
+                    const img = document.createElement('img');
+                    img.src = book.image_url;
+                    img.alt = book.name;
+                    img.className = 'w-full h-64 object-cover'; // Fixed height for consistency
+
+                    const cardBody = document.createElement('div');
+                    cardBody.className = 'p-4 text-center';
+
+                    const bookLink = document.createElement('a');
+                    bookLink.href = `#product-${book.id}`; // Simulate product page URL
+                    bookLink.className = 'block text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200 mb-1';
+                    bookLink.textContent = book.name;
+
+                    const author = document.createElement('p');
+                    author.className = 'text-sm text-gray-600 mb-2';
+                    author.textContent = book.author;
+
+                    const price = document.createElement('p');
+                    price.className = 'text-xl font-bold text-blue-700';
+                    price.textContent = book.price;
+
+                    cardBody.appendChild(bookLink);
+                    cardBody.appendChild(author);
+                    cardBody.appendChild(price);
+                    bookCard.appendChild(img);
+                    bookCard.appendChild(cardBody);
+                    productsContainer.appendChild(bookCard);
+                });
+            }
+        }
+
+        // Initial render of the page
+        renderPage();
+    </script>
+</body>
+</html>

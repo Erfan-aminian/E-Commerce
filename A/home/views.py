@@ -24,7 +24,7 @@ class HomeView(View):
 class GetAllCategoriesView(View):
     def get(self, request):
         categories = Category.objects.all()
-        return render(request, 'home/all_category.html, {'categories':categories})
+        return render(request, 'home/all_category.html', {'categories':categories})
 
 
 
