@@ -22,10 +22,20 @@ class HomeView(View):
         return render(request, 'home/home.html', {'products': products, 'categories':categories})
 
 class GetAllCategoriesView(View):
-    def get(self, request):
-        categories = Category.objects.all()
-        return render(request, 'home/all_category.html', {'categories':categories})
+    def get(self, request, slug=None):
+        categories = Category.objects.filter(is_sub=False).prefetch_related('scategory')
+        products = Product.objects.all()
+        selected_category = None
 
+        if slug:
+            selected_category = get_object_or_404(Category, slug=slug)
+            products = products.filter(category=selected_category)
+
+        return render(request, 'home/all_category.html', {
+            'categories': categories,
+            'products': products,
+            'selected_category': selected_category,
+        })
 
 
 
