@@ -69,7 +69,6 @@ class ProductDetailView(View):
 
 
 
-
 class BucketHome(IsAdminUserMixin, View):
     template_name = 'home/bucket.html'
     def get(self, request):
