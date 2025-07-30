@@ -13,6 +13,7 @@ urlpatterns = [
     path('all-category/', views.GetAllCategoriesView.as_view(), name='all_categories'),
     path('bucket/', include(bucket_urls)),
     path('product/<int:product_id>/<slug:slug>/', views.ProductDetailView.as_view(), name= 'product_detail'),
+    path('contact-us/', views.ContactUsView.as_view(), name='contact_us'),
 
 
 ]

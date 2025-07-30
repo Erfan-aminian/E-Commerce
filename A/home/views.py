@@ -2,11 +2,12 @@ from itertools import product
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from .models import Product,Category
+from .models import Product, Category, ContactUsModel
 from . import tasks
 from django.contrib import messages
 from utils import IsAdminUserMixin
 from orders.forms import CartAddform
+from .forms import ContactUsForm
 import random
 
 # Create your views here.
@@ -66,6 +67,25 @@ class ProductDetailView(View):
             'form': CartAddform(),
         }
         return render(request, 'home/detail.html', context)
+
+
+
+
+class ContactUsView(View):
+    template_name = 'home/contact.html'
+    def get(self, request):
+        form = ContactUsForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Contact success')
+        return render(request, self.template_name, {'form': form})
+
+
+
 
 
 
