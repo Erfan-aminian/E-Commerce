@@ -25,20 +25,25 @@ class HomeView(View):
 class GetAllCategoriesView(View):
     def get(self, request, slug=None):
         categories = Category.objects.filter(is_sub=False).prefetch_related('scategory')
-        products = Product.objects.all()
+        products = Product.objects.filter(available=True)
         selected_category = None
 
         if slug:
             selected_category = get_object_or_404(Category, slug=slug)
-            products = products.filter(category=selected_category)
+
+            if not selected_category.is_sub:
+                # اگر دسته والد بود => محصولات خودش + محصولات زیرمجموعه‌ها
+                sub_categories = selected_category.scategory.all()
+                products = products.filter(category__in=[selected_category, *sub_categories])
+            else:
+                # اگر زیرمجموعه انتخاب شده بود => فقط همون زیرمجموعه
+                products = products.filter(category=selected_category)
 
         return render(request, 'home/all_category.html', {
             'categories': categories,
             'products': products,
             'selected_category': selected_category,
         })
-
-
 
 
 class ProductDetailView(View):
