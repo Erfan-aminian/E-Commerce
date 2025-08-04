@@ -86,7 +86,7 @@ class ContactUsView(View):
         form = ContactUsForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('Contact success')
+            return redirect('home:home')
         return render(request, self.template_name, {'form': form})
 
 

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تماس با ما</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#6b7280',
+                        accent: '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="antialiased bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold rounded-md px-2 py-1 transition-all duration-200 hover:bg-white hover:text-blue-700">کتاب‌خانه من</a>
+            <nav>
+                <ul class="flex space-x-4 space-x-reverse">
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">خانه</a></li>
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">کتاب‌ها</a></li>
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">دسته‌بندی‌ها</a></li>
+                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">تماس با ما</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto mt-8 p-4">
+        <h1 class="text-4xl font-extrabold text-center mb-8 text-gray-900">تماس با ما</h1>
+
+        <section class="bg-white rounded-xl shadow-xl p-6 md:p-8 mb-12 border border-gray-200 max-w-2xl mx-auto">
+            <p class="text-lg text-gray-700 mb-6 text-center">
+                برای هرگونه سوال، پیشنهاد یا بازخورد، لطفاً از طریق فرم زیر با ما در تماس باشید.
+            </p>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Name Field -->
+                <div>
+                    <label for="{{ form.name.id_for_label }}" class="block text-lg font-medium text-gray-700 mb-2">نام شما:</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.name.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label for="{{ form.email.id_for_label }}" class="block text-lg font-medium text-gray-700 mb-2">ایمیل شما:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Subject Field -->
+                <div>
+                    <label for="{{ form.subject.id_for_label }}" class="block text-lg font-medium text-gray-700 mb-2">موضوع:</label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.subject.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Message Field -->
+                <div>
+                    <label for="{{ form.message.id_for_label }}" class="block text-lg font-medium text-gray-700 mb-2">پیام شما:</label>
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ form.message.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-center">
+                    <button type="submit"
+                            class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 text-xl">
+                        ارسال پیام
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-8 mt-12">
+        <div class="container mx-auto text-center">
+            <p class="mb-4">&copy; 2024 فروشگاه کتاب. تمامی حقوق محفوظ است.</p>
+            <div class="flex justify-center space-x-6 space-x-reverse">
+                <a href="#" class="hover:text-blue-400 transition-colors duration-200">درباره ما</a>
+                <a href="#" class="hover:text-blue-400 transition-colors duration-200">حریم خصوصی</a>
+                <a href="#" class="hover:text-blue-400 transition-colors duration-200">سوالات متداول</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
