@@ -4,6 +4,111 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 
+
+
+class UserRegisterForm(forms.Form):
+    full_name = forms.CharField(
+        label='نام کامل',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'نام و نام خانوادگی خود را وارد کنید',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2'
+        })
+    )
+
+    email = forms.EmailField(
+        label='ایمیل',
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'ایمیل خود را وارد کنید',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2'
+        })
+    )
+
+    password1 = forms.CharField(
+        label='رمز عبور',
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'رمز عبور خود را وارد کنید',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2'
+        })
+    )
+
+    password2 = forms.CharField(
+        label='تکرار رمز عبور',
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'رمز عبور را دوباره وارد کنید',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2'
+        })
+    )
+
+    phone = forms.CharField(
+        max_length=11,
+        label='شماره تلفن',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'مثال: 09123456789',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md p-2'
+        })
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', "رمز عبور و تکرار آن مطابقت ندارند.")
+
+        if password1 and len(password1) < 6:
+            self.add_error('password1', "رمز عبور باید حداقل ۶ کاراکتر باشد.")
+
+        return cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email').strip().lower()
+        if User.objects.filter(email__iexact=email).exists():
+            raise ValidationError('این ایمیل قبلاً ثبت شده است.')
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        user = User.objects.filter(phone_number=phone).exists()
+        if user:
+            raise ValidationError("این شماره قبلاً ثبت شده است.")
+        OtpCode.objects.filter(phone_number=phone).delete()
+        return phone
+
+
+
+
+class VerifyCodeForm(forms.Form):
+    code = forms.IntegerField()
+
+
+class UserLoginForm(forms.Form):
+    phone = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
@@ -31,38 +136,3 @@ class UserChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('email', 'phone_number', 'full_name', 'password', 'last_login')
-
-
-class UserRegisterForm(forms.Form):
-    email = forms.EmailField()
-    full_name = forms.CharField(label='full name')
-    phone = forms.CharField(max_length=11)
-    password = forms.CharField(widget=forms.PasswordInput)
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        user = User.objects.filter(email= email).exists()
-        if user:
-            raise ValidationError('This email already exists')
-        return email
-    def clean_phone(self):
-        phone = self.cleaned_data['phone']
-        user = User.objects.filter(phone_number=phone).exists()
-        if user:
-            raise ValidationError("this phone number already exists.")
-        OtpCode.objects.filter(phone_number=phone).delete()
-        return phone
-
-
-
-
-
-class VerifyCodeForm(forms.Form):
-    code = forms.IntegerField()
-
-
-class UserLoginForm(forms.Form):
-    phone = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-
-
