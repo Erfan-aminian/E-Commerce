@@ -83,8 +83,19 @@ class VerifyCodeForm(forms.Form):
 
 
 class UserLoginForm(forms.Form):
-    phone = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    phone = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'placeholder': 'مثال: 09123456789',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md'
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'رمز عبور خود را وارد کنید',
+            'class': 'shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md'
+        })
+    )
+
 
 
 
