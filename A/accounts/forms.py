@@ -2,7 +2,7 @@ from django import forms
 from .models import User, OtpCode
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
+from django.core.validators import RegexValidator
 
 
 
@@ -79,8 +79,13 @@ class UserRegisterForm(forms.Form):
 
 
 class VerifyCodeForm(forms.Form):
-    code = forms.IntegerField()
-
+    code = forms.CharField(
+        max_length=6,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-center tracking-widest text-lg',
+            'placeholder': 'کد تایید را وارد کنید',
+        })
+    )
 
 class UserLoginForm(forms.Form):
     phone = forms.CharField(
