@@ -26,19 +26,8 @@
 <body class="antialiased bg-gray-50 text-slate-800 font-sans">
 
     <!-- Header -->
-    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-3xl font-bold rounded-md px-2 py-1 hover:bg-white hover:text-blue-700 transition">کتاب‌خانه من</a>
-            <nav>
-                <ul class="flex space-x-4 space-x-reverse">
-                    <li><a href="#" class="hover:text-blue-200 text-lg">خانه</a></li>
-                    <li><a href="#" class="hover:text-blue-200 text-lg">کتاب‌ها</a></li>
-                    <li><a href="#" class="hover:text-blue-200 text-lg">دسته‌بندی‌ها</a></li>
-                    <li><a href="#" class="hover:text-blue-200 text-lg">تماس با ما</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    {% include "inc/navbar.html" %}
+
 
 
     <!-- Main -->
