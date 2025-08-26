@@ -23,6 +23,7 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ManyToManyField(Category, related_name='products')
     name = models.CharField(max_length=200)
+    author =  models.CharField(max_length=200, null=True, blank=True)
     slug = models.SlugField(max_length=200, unique=True)
     image = models.ImageField()
     description = RichTextField()

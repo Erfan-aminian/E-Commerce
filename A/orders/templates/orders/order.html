@@ -36,19 +36,8 @@
     </style>
 </head>
 <body class="antialiased">
-    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-3xl font-bold rounded-md px-2 py-1 transition-all duration-200 hover:bg-white hover:text-blue-700">کتاب‌خانه من</a>
-            <nav>
-                <ul class="flex space-x-4 space-x-reverse">
-                    <li><a href="{% url 'home:home' %}" class="hover:text-blue-200 transition-colors duration-200 text-lg">خانه</a></li>
-                    <li><a href="{% url 'orders:cart' %}" class="hover:text-blue-200 transition-colors duration-200 text-lg">سبد خرید</a></li>
-                    <li><a href="{% url 'home:all_category' %}" class="hover:text-blue-200 transition-colors duration-200 text-lg">دسته‌بندی‌ها</a></li>
-                    <li><a href="#" class="hover:text-blue-200 transition-colors duration-200 text-lg">تماس با ما</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    {% include "inc/navbar.html" %}
+
 
     <main class="container mx-auto mt-8 p-4">
         <h1 class="text-4xl font-extrabold text-center mb-8 text-gray-900">نهایی کردن خرید</h1>
